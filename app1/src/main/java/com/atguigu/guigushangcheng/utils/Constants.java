@@ -28,7 +28,7 @@ public class Constants {
     public static String BASE_URL_IMAGE  = BASE_URL+"/img";
 
 
-
+//    http://182.92.5.3:8081/android/resources
     //小裙子
     public static final String SKIRT_URL = BASE_URL_JSON + "SKIRT_URL.json";
     //上衣

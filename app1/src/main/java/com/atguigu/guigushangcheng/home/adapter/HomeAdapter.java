@@ -1,6 +1,7 @@
 package com.atguigu.guigushangcheng.home.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atguigu.guigushangcheng.R;
+import com.atguigu.guigushangcheng.app.GoodsInfoActivity;
+import com.atguigu.guigushangcheng.home.bean.GoodsBean;
 import com.atguigu.guigushangcheng.home.bean.HomeBean;
 import com.atguigu.guigushangcheng.home.view.MyGridView;
 import com.atguigu.guigushangcheng.utils.Constants;
@@ -74,7 +77,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
      * 当前类型
      */
     public int currentType = BANNER;
-
+    public static final String GOODS_BEAN = "goodsBean";
 
     private final Context context;
     private final HomeBean.ResultBean result;
@@ -184,7 +187,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
     }
 
-     class HotViewHolder extends RecyclerView.ViewHolder {//热卖
+    class HotViewHolder extends RecyclerView.ViewHolder {//热卖
         @InjectView(R.id.tv_more_hot)
         TextView tvMoreHot;
         @InjectView(R.id.gv_hot)
@@ -208,7 +211,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             gvHot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(context, "beidianjikkkk=="+ position, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "beidianjikkkk==" + position, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -293,7 +296,6 @@ public class HomeAdapter extends RecyclerView.Adapter {
             adapter = new SeckillRecyclerViewAdapter(context, seckillInfoBean);
             rvSeckill.setAdapter(adapter);//設置适配器     设置布局管理器
             rvSeckill.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-//            秒杀的点击哦
             adapter.setOnItemClickListener(new SeckillRecyclerViewAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
@@ -342,7 +344,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             actViewpager.setAdapter(adapter);
             actViewpager.setPageTransformer(true, new RotateDownTransformer());
 
-            //设置 活动 点击事件  通过借口回调
+            //设置点击事件  通过借口回调
             adapter.setOnItemClickListener(new ViewPagerAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
@@ -413,7 +415,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
         }
 
-        public void setData(List<HomeBean.ResultBean.BannerInfoBean> banner_info) {
+        public void setData(final List<HomeBean.ResultBean.BannerInfoBean> banner_info) {
 
             //准备图片集合
             List<String> imageUrls = new ArrayList<>();
@@ -440,6 +442,38 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 @Override
                 public void OnBannerClick(int position) {
                     Toast.makeText(context, "realPostion==" + position, Toast.LENGTH_SHORT).show();
+                    int realPostion = position;
+                    if (realPostion < banner_info.size()) {
+                        String product_id = "";
+                        String name = "";
+                        String cover_price = "";
+                        String image = "";
+                        if (realPostion == 0) {
+                            product_id = "627";
+                            cover_price = "32.00";
+                            name = "剑三T恤批发";
+                        } else if (realPostion == 1) {
+                            product_id = "21";
+                            cover_price = "8.00";
+                            name = "同人原创】剑网3 剑侠情缘叁 Q版成男 口袋胸针";
+                        } else {
+                            product_id = "1341";
+                            cover_price = "50.00";
+                            name = "【蓝诺】《天下吾双》 剑网3同人本";
+                        }
+
+                        image = banner_info.get(position).getImage();
+
+                        GoodsBean goodsBean = new GoodsBean();
+                        goodsBean.setProduct_id(product_id);
+                        goodsBean.setName(name);
+                        goodsBean.setCover_price(cover_price);
+                        goodsBean.setFigure(image);
+
+                        Intent intent = new Intent(context ,GoodsInfoActivity.class );
+                        intent.putExtra(GOODS_BEAN, goodsBean);
+                        context.startActivity(intent);
+                    }
                 }
             });
 
