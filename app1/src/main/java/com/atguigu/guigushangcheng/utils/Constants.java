@@ -16,7 +16,7 @@ public class Constants {
 //    public static String BASE_URL = "http://192.168.1.52:8080/atguigu";自己的
     public static String BASE_URL = "http://182.92.5.3:8081/android/resources";
 
-
+//http://182.92.5.3:8081/android/resources/json/HOME_URL.json
     private static final String BASE_URL_JSON = BASE_URL+"/json/";
     /**
      * 主页面的路径
